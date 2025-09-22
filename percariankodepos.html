@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<head>
+  <title>Pencarian Kode Pos Indonesia</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f8f9fa;
+    }
+    .navbar {
+      background: #c82333;
+      color: #fff;
+      padding: 15px;
+      font-size: 20px;
+    }
+    .container {
+      max-width: 800px;
+      margin: 30px auto;
+      padding: 20px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+    h2 {
+      margin-bottom: 20px;
+    }
+    label {
+      font-weight: bold;
+    }
+    select, input[type="text"] {
+      width: 100%;
+      padding: 8px;
+      margin: 8px 0 16px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .btn {
+      background: #28a745;
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .btn:hover {
+      background: #218838;
+    }
+    .result {
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 5px;
+      background: #e2f0d9;
+      border-left: 5px solid #28a745;
+    }
+  </style>
+</head>
+<body>
+  <div class="navbar">Kode Pos Indonesia</div>
+
+  <div class="container">
+    <h2>Cari Kode Pos</h2>
+
+    <!-- Pilih Provinsi -->
+    <label for="provinsi">Provinsi</label>
+    <select id="provinsi" onchange="loadKota()">
+      <option value="">Pilih Provinsi</option>
+      <option value="Jawa Timur">Jawa Timur</option>
+      <option value="DKI Jakarta">DKI Jakarta</option>
+    </select>
+
+    <!-- Pilih Kota -->
+    <label for="kota">Kabupaten/Kota</label>
+    <select id="kota" onchange="loadKecamatan()">
+      <option value="">Pilih Kota</option>
+    </select>
+
+    <!-- Pilih Kecamatan -->
+    <label for="kecamatan">Kecamatan</label>
+    <select id="kecamatan">
+      <option value="">Pilih Kecamatan</option>
+    </select>
+
+    <!-- Kata kunci -->
+    <label for="keyword">Masukkan Kata Kunci / Kode Pos</label>
+    <input type="text" id="keyword" placeholder="contoh: 60111 atau Keputih">
+
+    <button class="btn" onclick="cariKodePos()">Cari</button>
+
+    <div id="hasil" class="result" style="display:none;"></div>
+  </div>
+
+  <script>
+    // Data sederhana kode pos
+    const dataKodePos = {
+      "Jawa Timur": {
+        "Surabaya": {
+          "Keputih": "60111",
+          "Sukolilo": "60122"
+        },
+        "Malang": {
+          "Lowokwaru": "65145",
+          "Klojen": "65119"
+        }
+      },
+      "DKI Jakarta": {
+        "Jakarta Selatan": {
+          "Kebayoran Baru": "12120",
+          "Tebet": "12810"
+        },
+        "Jakarta Timur": {
+          "Cakung": "13910",
+          "Matraman": "13110"
+        }
+      }
+    };
+
+    // Load Kota berdasarkan provinsi
+    function loadKota() {
+      const provinsi = document.getElementById("provinsi").value;
+      const kotaSelect = document.getElementById("kota");
+      kotaSelect.innerHTML = '<option value="">Pilih Kota</option>';
+      document.getElementById("kecamatan").innerHTML = '<option value="">Pilih Kecamatan</option>';
+
+      if (provinsi && dataKodePos[provinsi]) {
+        Object.keys(dataKodePos[provinsi]).forEach(kota => {
+          let opt = document.createElement("option");
+          opt.value = kota;
+          opt.textContent = kota;
+          kotaSelect.appendChild(opt);
+        });
+      }
+    }
+
+    // Load Kecamatan berdasarkan kota
+    function loadKecamatan() {
+      const provinsi = document.getElementById("provinsi").value;
+      const kota = document.getElementById("kota").value;
+      const kecSelect = document.getElementById("kecamatan");
+      kecSelect.innerHTML = '<option value="">Pilih Kecamatan</option>';
+
+      if (provinsi && kota && dataKodePos[provinsi][kota]) {
+        Object.keys(dataKodePos[provinsi][kota]).forEach(kec => {
+          let opt = document.createElement("option");
+          opt.value = kec;
+          opt.textContent = kec;
+          kecSelect.appendChild(opt);
+        });
+      }
+    }
+
+    // Fungsi pencarian kode pos
+    function cariKodePos() {
+      const provinsi = document.getElementById("provinsi").value;
+      const kota = document.getElementById("kota").value;
+      const kecamatan = document.getElementById("kecamatan").value;
+      const keyword = document.getElementById("keyword").value.trim().toLowerCase();
+      const hasilDiv = document.getElementById("hasil");
+
+      let hasil = "Data tidak ditemukan.";
+
+      if (provinsi && kota && dataKodePos[provinsi][kota]) {
+        const dataKec = dataKodePos[provinsi][kota];
+
+        // Cari berdasarkan kecamatan
+        if (kecamatan && dataKec[kecamatan]) {
+          hasil = `Kode Pos ${dataKec[kecamatan]} untuk daerah ${kecamatan}, ${kota}, ${provinsi}`;
+        } 
+        // Cari berdasarkan keyword (nama atau kode pos)
+        else if (keyword) {
+          for (let kec in dataKec) {
+            if (kec.toLowerCase().includes(keyword) || dataKec[kec] === keyword) {
+              hasil = `Kode Pos ${dataKec[kec]} untuk daerah ${kec}, ${kota}, ${provinsi}`;
+              break;
+            }
+          }
+        }
+      }
+
+      hasilDiv.style.display = "block";
+      hasilDiv.textContent = hasil;
+    }
+  </script>
+</body>
+</html>
