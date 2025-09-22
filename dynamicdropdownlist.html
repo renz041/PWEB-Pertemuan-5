@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<head>
+  <title>Dynamic Drop Down List</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    h2 {
+      margin-bottom: 20px;
+    }
+    select {
+      padding: 5px;
+      margin-right: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Dynamic Drop Down List dengan JavaScript</h2>
+
+  <!-- Dropdown Produk -->
+  <select id="produk">
+    <option value="">Pilih Jenis Produk</option>
+    <option value="Desktop">Desktop</option>
+    <option value="Laptop">Laptop</option>
+    <option value="Smartphone">Smartphone</option>
+  </select>
+
+  <!-- Dropdown Merk -->
+  <select id="merk">
+    <option value="">Pilih Merk</option>
+  </select>
+
+  <script>
+    // Data merk untuk tiap produk
+    const dataMerk = {
+      "Desktop": ["Dell", "HP", "Asus", "Acer"],
+      "Laptop": ["Lenovo", "MSI", "Apple", "Asus"],
+      "Smartphone": ["Samsung", "Xiaomi", "Oppo", "iPhone"]
+    };
+
+    // Ambil elemen
+    const produkSelect = document.getElementById("produk");
+    const merkSelect = document.getElementById("merk");
+
+    // Event listener saat produk berubah
+    produkSelect.addEventListener("change", function() {
+      // Kosongkan merk
+      merkSelect.innerHTML = '<option value="">Pilih Merk</option>';
+
+      // Ambil produk yang dipilih
+      const selectedProduk = this.value;
+
+      // Isi merk jika ada
+      if (selectedProduk && dataMerk[selectedProduk]) {
+        dataMerk[selectedProduk].forEach(merk => {
+          let option = document.createElement("option");
+          option.value = merk;
+          option.textContent = merk;
+          merkSelect.appendChild(option);
+        });
+      }
+    });
+  </script>
+</body>
+</html>
