@@ -32,26 +32,21 @@
   </select>
 
   <script>
-    // Data merk untuk tiap produk
     const dataMerk = {
       "Desktop": ["Dell", "HP", "Asus", "Acer"],
       "Laptop": ["Lenovo", "MSI", "Apple", "Asus"],
       "Smartphone": ["Samsung", "Xiaomi", "Oppo", "iPhone"]
     };
 
-    // Ambil elemen
     const produkSelect = document.getElementById("produk");
     const merkSelect = document.getElementById("merk");
 
-    // Event listener saat produk berubah
     produkSelect.addEventListener("change", function() {
-      // Kosongkan merk
+
       merkSelect.innerHTML = '<option value="">Pilih Merk</option>';
 
-      // Ambil produk yang dipilih
       const selectedProduk = this.value;
 
-      // Isi merk jika ada
       if (selectedProduk && dataMerk[selectedProduk]) {
         dataMerk[selectedProduk].forEach(merk => {
           let option = document.createElement("option");
