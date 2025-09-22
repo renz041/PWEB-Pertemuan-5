@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<head>
+  <title>Form Registrasi Mahasiswa</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <style>
+    body {
+      background-color: #f8f9fa;
+      font-family: Arial, sans-serif;
+    }
+    .container {
+      margin-top: 50px;
+      max-width: 600px;
+    }
+    .panel {
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="panel panel-primary">
+      <div class="panel-heading text-center">
+        <h3>Form Registrasi Mahasiswa</h3>
+      </div>
+      <div class="panel-body">
+        <form id="regForm" onsubmit="return validateForm()">
+          <!-- Nama -->
+          <div class="form-group">
+            <label for="nama">Nama</label>
+            <input type="text" class="form-control" id="nama" name="nama" list="namaList" required>
+            <datalist id="namaList">
+              <option value="Andi">
+              <option value="Budi">
+              <option value="Citra">
+              <option value="Dewi">
+              <option value="Eko">
+            </datalist>
+          </div>
+          
+          <!-- Email -->
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" class="form-control" id="email" name="email" list="emailList" required>
+            <datalist id="emailList">
+              <option value="example@gmail.com">
+              <option value="example@yahoo.com">
+              <option value="user@kampus.ac.id">
+            </datalist>
+          </div>
+
+          <!-- NRP -->
+          <div class="form-group">
+            <label for="nrp">NRP</label>
+            <input type="text" class="form-control" id="nrp" name="nrp" list="nrpList" required>
+            <datalist id="nrpList">
+              <option value="5025231001">
+              <option value="5025231002">
+              <option value="5025231003">
+              <option value="5025231004">
+              <option value="5025231005">
+            </datalist>
+          </div>
+
+          <!-- Tombol -->
+          <button type="submit" class="btn btn-primary">Submit</button>
+          <button type="reset" class="btn btn-warning">Reset</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function validateForm() {
+      let nama = document.getElementById("nama").value.trim();
+      let email = document.getElementById("email").value.trim();
+      let nrp = document.getElementById("nrp").value.trim();
+
+      if (!nama || !email || !nrp) {
+        alert("Semua kolom wajib diisi!");
+        return false;
+      }
+      return true;
+    }
+  </script>
+</body>
+</html>
